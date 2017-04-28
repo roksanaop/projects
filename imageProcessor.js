@@ -1,29 +1,35 @@
-var imageProcessor = {
-  parameters: { //default config
+var imageProcessor = (function() {
+  var parameters = { //default config
     thumbWidth: 150,
     thumbHeight: 150,
     dropArea: "#dropArea",
     input: "#fieldInput",
     gallery: "#gallery",
     allowedFiles: ["jpg", "png"]
-  },
-  init: function(arg) {
-    var config = buildConfig(imageProcessor.parameters, arg); //update config
+  };
+  return {
+    init: init,
+    getParameters: parameters
+  };
+  function init (arg) {
+    var config = utilsModule.buildConfig(this.getParameters, arg); //update config
     var dropArea = document.getElementById(config.dropArea.slice(1)); 
     eventHandlerModule.attachEvent(dropArea, "change", function() {
-      fileModule.handleFiles(config, galleryModule.makeGallery);
+      handleFiles(config, galleryModule.makeThumbnail);
     });
-    function buildConfig(defaults, config) {
-      var result = {}; //make new object for handling updated configuration
-      for (var prop in defaults) {
-        result[prop] = (config && typeof config[prop] !== "undefined") ? config[prop] : defaults[prop];
+    function handleFiles(config, callback) {
+      var files = document.querySelector(config.input).files; //variable, which shows how many files is loading
+      var file, allowed;
+      if (!files) { 
+        return;
       }
-      for (var prop in config) { //if config has new poperties, it will add this to updated configuration
-        if (typeof defaults[prop] === "undefined") {
-          result[prop] = config[prop];
+      for (var i = 0; i < files.length ; i++) {
+        file = files[i];
+        allowed = fileModule.checkAllowedFile(file, config.allowedFiles); //check  if the file is allowed
+        if (allowed) {
+          fileModule.loadFile(file, config, callback);
         }
       }
-      return result;
     }
-  }
-}
+  };
+})();
