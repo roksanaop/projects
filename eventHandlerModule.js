@@ -1,8 +1,12 @@
-var eventHandlerModule = {
-  attachEvent: function(target, event, callback) {
+var eventHandlerModule = (function() {
+  return {
+    attachEvent: attachEvent,
+    detachEvent: detachEvent
+  };
+  function attachEvent(target, event, callback) {
     target.addEventListener(event, callback, false);
-  },
-  detachEvent: function(target, event, callback) {
+  };
+  function detachEvent(target, event, callback) {
     target.removeEventListener(event, callback, false);
-  }
-}
+  };
+})();
