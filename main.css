@@ -46,7 +46,8 @@ body {
 
 #gallery {
   min-height: 150px;
-  margin: 20px;
+  width: 90%;
+  margin: 20px auto;
   border: 1px solid #85CB33;
   border-radius: 5px;
   display: flex;
@@ -54,9 +55,14 @@ body {
   justify-content: space-around;
 }
 
-#gallery img {
+canvas {
+  border: 1px dotted #85CB33;;
+}
+
+#gallery canvas {
   margin: 10px 5px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 footer {
