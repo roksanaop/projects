@@ -19,15 +19,10 @@ var imageProcessor = (function() {
     });
     function handleFiles(config, callback) {
       var files = document.querySelector(config.input).files; //variable, which shows how many files is loading
-      var file, allowed;
-      if (!files) { 
-        return;
-      }
+      if (!files) { return; }
       for (var i = 0; i < files.length ; i++) {
-        file = files[i];
-        allowed = fileModule.checkAllowedFile(file, config.allowedFiles); //check  if the file is allowed
-        if (allowed) {
-          fileModule.loadFile(file, config, callback);
+        if (fileModule.checkAllowedFile(files[i], config.allowedFiles)) { //check if the file is allowed
+          fileModule.loadFile(files[i], config, callback);
         }
       }
     }
