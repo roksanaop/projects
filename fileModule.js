@@ -3,7 +3,7 @@ var fileModule = (function() {
     loadFile: loadFile,
     checkAllowedFile: checkAllowedFile
   };
-  function loadFile(file, config, callback, image) {
+  function loadFile(file, config, callback) {
     var reader = new FileReader(); //create new FileReader(), which lets read the content of files
     reader.onload = function(event) {
       callback(config, file.name, event.target.result);
