@@ -1,0 +1,18 @@
+<md-dialog>
+  <md-dialog-content>
+    <md-card>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">{{app.video.title}}</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <!--<iframe width="" height="" ng-src="" frameborder="0" allowfullscreen></iframe>-->
+        <div ng-bind-html="app.embed()"></div>
+      </md-card-content>
+    </md-card>
+  </md-dialog-content>
+  <md-dialog-actions>
+    <md-button class="md-raised" ng-click="app.backToMain()">Back</md-button>
+  </md-dialog-actions>
+</md-dialog>

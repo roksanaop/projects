@@ -1,0 +1,7 @@
+<form name="videoForm" ng-submit="app.searchVideo(app.link);" class="maxWidth">
+  <md-input-container class="md-block">
+    <label>Paste here your link e.g. https://www.youtube.com/watch?v=-UCHsqxBqwY, https://youtu.be/-UCHsqxBqwY or -UCHsqxBqwY</label>
+    <input ng-model="app.link" id="linkInput" type="text" name="videoLink" required>
+    <md-button type="submit" class="md-raised">Add</md-button>
+  </md-input-container>
+</form>
