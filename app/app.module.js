@@ -4,5 +4,5 @@
 angular
   .module('videoApp', [
     'ngMaterial',
-    'ngRoute'
+    'ui.router'
   ]);
