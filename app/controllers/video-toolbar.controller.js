@@ -4,12 +4,14 @@
   class VideoToolbarCtrl {
     constructor(StorageService, VideoService, FilterService) {
       Object.assign(this, {StorageService, VideoService, FilterService});
-      this.videos = this.VideoService.videos;
-      this.temporaryVideos = this.VideoService.temporaryVideos;
-      this.options = this.VideoService.options;
+      this.videos = this.VideoService.get('videos');
+      this.temporaryVideos = this.VideoService.get('temporaryVideos');
     }
 
     onlyFavourites() {
+      this.options.currentPage = 0;
+      this.options.onlyFavourites = true;
+      //console.log(this.videos);
       return this.FilterService.onlyFavourites();
     }
     
@@ -18,12 +20,14 @@
       this.options.onlyFavourites = false;
       this.videos.length = 0;
       this.temporaryVideos.map(val => {this.videos.push(val);});
+      return this.videos;
     }
 
     removeAll() {
       this.options.currentPage = 0;
       let videosLength = this.videos.length;
-      this.StorageService.remove('videos');
+      this.StorageService.remove('videos')
+        .then(null, error => {console.log(error);});
       this.videos.splice(0, videosLength);
       this.temporaryVideos.splice(0, videosLength);
       //console.log(this.videos);
@@ -34,9 +38,9 @@
       demoYTVideos.map(val => {this.VideoService.search(val)});
     }
 
-    prevPage() {
-      if (this.options.currentPage > this.numberOfPages()) {
-        this.options.currentPage = this.numberOfPages();
+    prevPage(currentPage, currentPageSize, onlyFavourites) {
+      if (currentPage > this.numberOfPages(currentPageSize, onlyFavourites)) {
+        currentPage = this.numberOfPages(currentPageSize, onlyFavourites);
       }
       return this.options.currentPage--;
     }
@@ -45,8 +49,8 @@
       return this.options.currentPage++;
     }
 
-    numberOfPages() {
-      return this.FilterService.numberOfPages();
+    numberOfPages(currentPageSize, onlyFavourites) {
+      return this.FilterService.numberOfPages(currentPageSize, onlyFavourites);
     }
     
   }
