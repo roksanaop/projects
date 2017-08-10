@@ -4,24 +4,21 @@
   class FilterService {
     constructor(VideoService) {
       Object.assign(this, {VideoService});
-      this.videos = this.VideoService.videos;
-      this.options = this.VideoService.options;
+      this.videos = this.VideoService.get('videos');
     }
 
     onlyFavourites() {
-      this.options.currentPage = 0;
-      this.options.onlyFavourites = true;
       this.fav = this.videos.filter(val => {return val.favourite;});
       this.videos.length = 0;
       this.fav.map(val => {this.videos.push(val);});      
       return this.videos;
     }
 
-    numberOfPages() {
-      let numberPages = Math.ceil(this.videos.length/this.options.currentPageSize);
+    numberOfPages(currentPageSize, onlyFavourites) {
+      let numberPages = Math.ceil(this.videos.length/currentPageSize);
 
-      if (this.options.onlyFavourites) {
-        numberPages = Math.ceil(this.onlyFavourites().length/this.options.currentPageSize);
+      if (onlyFavourites) {
+        numberPages = Math.ceil(this.onlyFavourites().length/currentPageSize);
       }
       return numberPages || 1;
     }
