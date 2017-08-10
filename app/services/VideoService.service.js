@@ -4,17 +4,25 @@
   class VideoService {
     constructor(StorageService, YouTubeService, VimeoService, $mdDialog) {
       Object.assign(this, {StorageService, YouTubeService, VimeoService, $mdDialog});
-      this.StorageService.get('videos')
+       this.StorageService.get('videos')
         .then(value => {this.videos = value || []});
       this.StorageService.get('videos')
         .then(value => {this.temporaryVideos = value || []}); //variable created for button SHOW ALL after filtering this.videos - ONLY FAV
-      this.options = {
-        pageSizes: [5, 10, 20, 50, 100],
-        currentPageSize: 5,
-        currentPage: 0,
-        display: 'list',
-        orderProp: 'title',
-        onlyFavourites: false
+    }
+
+    /*get() {
+      return {
+        videos: this.videos,
+        temporaryVideos: this.temporaryVideos
+      }
+    }*/
+
+    get(name) {
+      if (name === 'videos') {
+        return this.videos;
+      }
+      if (name === 'temporaryVideos') {
+        return this.temporaryVideos;
       }
     }
 
