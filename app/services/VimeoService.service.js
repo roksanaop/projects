@@ -6,13 +6,13 @@
       Object.assign(this, {$http});
     }
 
-    search(id, callback) {
+    search(id) {
       var key = '67b663ff016d5f5e7e628af3ebee3bb6';
       var url = 'https://api.vimeo.com/videos/' + id + '?name&access_token=' + key;
-      return this.$http.get(url)
-        .then(value => {callback(this.prepareData(value));
-          //console.log('Add vimeo');
-        });
+      return this.$http.get(url).then(value => {
+        //console.log('Add vimeo');
+        return this.prepareData(value);
+      }).catch(() => alert('This video doesn\'t exist. Try again!'));
     }
 
     prepareData(data) {
