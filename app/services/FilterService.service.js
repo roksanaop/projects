@@ -2,23 +2,16 @@
   'use strict';
 
   class FilterService {
-    constructor(VideoService) {
-      Object.assign(this, {VideoService});
-      this.videos = this.VideoService.get('videos');
+
+    onlyFavourites(videosArray) {
+      return videosArray.filter(val => {return val.favourite});
     }
 
-    onlyFavourites() {
-      this.fav = this.videos.filter(val => {return val.favourite;});
-      this.videos.length = 0;
-      this.fav.map(val => {this.videos.push(val);});      
-      return this.videos;
-    }
-
-    numberOfPages(currentPageSize, onlyFavourites) {
-      let numberPages = Math.ceil(this.videos.length/currentPageSize);
+    numberOfPages(currentPageSize, onlyFavourites, videosArray) {
+      let numberPages = Math.ceil(videosArray.length/currentPageSize);
 
       if (onlyFavourites) {
-        numberPages = Math.ceil(this.onlyFavourites().length/currentPageSize);
+        numberPages = Math.ceil(this.onlyFavourites(videosArray).length/currentPageSize);
       }
       return numberPages || 1;
     }
