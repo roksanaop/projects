@@ -7,7 +7,9 @@
       templateUrl: 'app/templates/video-toolbar.template.html',
       controller: 'VideoToolbarCtrl',
       bindings: {
-        options: '<'
+        options: '<',
+        videos: '<',
+        temporaryVideos: '<'
       }
     });
 
