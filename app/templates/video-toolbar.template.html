@@ -22,17 +22,17 @@
   </div>
   <div class="md-toolbar-tools">
     <div flex>
-      <md-button class="md-raised" ng-click="$ctrl.onlyFavourites()" ng-disabled="$ctrl.options.onlyFavourites">Only fav</md-button>
+      <md-button class="md-raised" ng-click="$ctrl.showFavourites($ctrl.videos)" ng-disabled="$ctrl.options.onlyFavourites">Only fav</md-button>
       <md-button class="md-raised" ng-click="$ctrl.showAll()" ng-disabled="!$ctrl.options.onlyFavourites">All videos</md-button>
-      <md-button class="md-raised" ng-click="$ctrl.loadDemoVideos()">Load demo videos</md-button>
+      <md-button class="md-raised" ng-click="$ctrl.loadDemoVideos()" ng-hide="$ctrl.options.onlyFavourites">Load demo videos</md-button>
       <md-button class="md-raised" ng-click="$ctrl.removeAll()">Remove all videos</md-button>
     </div>
   </div>
   <div class="md-toolbar-tools">
     <div flex>
-      <md-button class="md-raised" ng-click="$ctrl.prevPage()" ng-disabled="$ctrl.options.currentPage === 0"><</md-button>
-      <span>{{$ctrl.options.currentPage + 1}} of {{$ctrl.numberOfPages()}}</span>
-      <md-button class="md-raised" ng-click="$ctrl.nextPage()" ng-disabled="$ctrl.options.currentPage >= ($ctrl.numberOfPages() - 1)">></md-button>
+      <md-button class="md-raised" ng-click="$ctrl.prevPage($ctrl.options.currentPage, $ctrl.options.currentPageSize, $ctrl.options.onlyFavourites, $ctrl.videos)" ng-disabled="$ctrl.options.currentPage === 0"><</md-button>
+      <span>{{$ctrl.options.currentPage + 1}} of {{$ctrl.numberOfPages($ctrl.options.currentPageSize, $ctrl.options.onlyFavourites, $ctrl.videos)}}</span>
+      <md-button class="md-raised" ng-click="$ctrl.nextPage()" ng-disabled="$ctrl.options.currentPage >= ($ctrl.numberOfPages($ctrl.options.currentPageSize, $ctrl.options.onlyFavourites, $ctrl.videos) - 1)">></md-button>
     </div>
   </div>
 </md-toolbar>
