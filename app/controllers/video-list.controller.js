@@ -4,8 +4,12 @@
   class VideoListCtrl {
     constructor(StorageService, VideoService) {
       Object.assign(this, {StorageService, VideoService});
-      this.videos = this.VideoService.get('videos');
-      this.temporaryVideos = this.VideoService.get('temporaryVideos');
+      this.StorageService.get('videos').then(videos => {
+        this.videos = JSON.parse(JSON.stringify(videos)) || [];
+      });
+      this.StorageService.get('videos').then(videos => {
+        this.temporaryVideos = JSON.parse(JSON.stringify(videos)) || []; //variable created for button SHOW ALL after filtering this.videos - ONLY FAV
+      });
       this.options = {
         pageSizes: [5, 10, 20, 50, 100],
         currentPageSize: 5,
@@ -15,37 +19,41 @@
         onlyFavourites: false
       }
     }
+    
+    add(link) {
+      this.VideoService.add(link).then((videoData) => {
+        if (!videoData) {return;}
+        this.videos.push(videoData);
+        this.temporaryVideos = [];
+        this.videos.map(val => {
+          this.temporaryVideos.push(val);
+        });
+        return this.StorageService.set('videos', this.videos);
+      });
+    }
 
     watch(video) {
       this.VideoService.modal(video);
     }
 
     remove(video) {
-      if (this.options.onlyFavourites) {
-        let videoIndexTemp = this.temporaryVideos.indexOf(video);
-        this.StorageService.remove('videos');
-        this.temporaryVideos.splice(videoIndexTemp, 1);
-        let videoIndex = this.videos.indexOf(video);
-        this.videos.splice(videoIndex, 1);
-        return this.StorageService.set('videos', this.temporaryVideos);
-      }
       let videoIndex = this.videos.indexOf(video);
-      this.StorageService.remove('videos');
       this.videos.splice(videoIndex, 1);
-      this.temporaryVideos.splice(videoIndex, 1);
-      this.StorageService.set('videos', this.temporaryVideos);
+      this.temporaryVideos = [];
+      this.videos.map(val => {
+        this.temporaryVideos.push(val);
+      });
+      return this.StorageService.set('videos', this.videos);
     }
 
     addToFavourites(video) {
-      if (this.options.onlyFavourites) {
-        let videoIndex = this.temporaryVideos.indexOf(video);
-        video.favourite = !video.favourite;
-        this.StorageService.remove('videos');
-        this.temporaryVideos.splice(videoIndex, 1, video);
-        return this.StorageService.set('videos', this.temporaryVideos);
-      }
       video.favourite = !video.favourite;
-      this.StorageService.set('videos', this.videos);
+      this.temporaryVideos = [];
+      this.videos.map(val => {
+        this.temporaryVideos.push(val);
+      });
+      //console.log(angular.copy(this.videos));
+      return this.StorageService.set('videos', this.videos);
     }
 
     paginationFilter(current, size) {
