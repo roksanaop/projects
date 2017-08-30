@@ -10,7 +10,7 @@
         $stateProvider
           .state('videos', {
             url: '/videos',
-            template: '<video-searcher></video-searcher><video-list></video-list>'
+            template: '<video-list></video-list>'
           });
         $urlRouterProvider.otherwise('/videos');
 
