@@ -6,13 +6,13 @@
       Object.assign(this, {$http});
     }
 
-    search(id, callback) {
+    search(id) {
       var key = 'AIzaSyAG_j5vdipqwk28k2ozPLDqvb4cDAdMJHY';
       var url = 'https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=' + id + '&key=' + key;
-      return this.$http.get(url)
-        .then(value => {callback(this.prepareData(value));
-          //console.log('Add youtube');
-        });
+      return this.$http.get(url).then(value => {
+        //console.log('Add youtube');
+        return this.prepareData(value);
+      }).catch(() => alert('This video doesn\'t exist. Try again!'));
     }
 
     prepareData(data) {
