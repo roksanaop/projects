@@ -3,37 +3,39 @@
 
   class StorageService {
 
-    constructor ($timeout) {
-      Object.assign(this, {$timeout});
+    constructor ($interval) {
+      Object.assign(this, {$interval});
     }
 
-    get(keyValue) {
+    get(keyName) {
       return new Promise((resolve, reject) => {
-        this.$timeout(() => {
-          let videoArr = localStorage.getItem(keyValue);
+        this.$interval(() => {
+          let videoArr = localStorage.getItem(keyName);
           resolve(JSON.parse(videoArr));
-          reject(new Error('This keyValue does not exist, try with different keyValue'));
-        }, 1000);
+          reject(new Error('This keyName does not exist, try with different keyName'));
+        }, 500);
       });
     }
 
     set(keyName, keyValue) {
       return new Promise((resolve, reject) => {
-        this.$timeout((resolve, reject) => {
+        this.$interval(() => {
           let setArray = localStorage.setItem(keyName, JSON.stringify(keyValue));
-          let videoArr = localStorage.getItem(keyValue);
+          let videoArr = localStorage.getItem(keyName);
           resolve(JSON.parse(videoArr));
           reject(new Error('Error! Failed setting'));
-        }, 1000);
+        }, 500);
       });
     }
 
     remove(keyName) {
       return new Promise((resolve, reject) => {
-        this.$timeout(() => {
-          resolve(localStorage.removeItem(keyName));
+        this.$interval(() => {
+          let removeArray = localStorage.removeItem(keyName);
+          let videoArr = localStorage.getItem(keyName);
+          resolve(JSON.parse(videoArr));
           reject(new Error('Error! Failed removing'));
-        }, 1000);
+        }, 500);
       });
     }
 
