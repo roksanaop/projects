@@ -2,8 +2,8 @@
   'use strict';
 
   class VideoToolbarCtrl {
-    constructor(StorageService, VideoService, FilterService, $scope) {
-      Object.assign(this, {StorageService, VideoService, FilterService, $scope});
+    constructor(StorageService, VideoService, FilterService) {
+      Object.assign(this, {StorageService, VideoService, FilterService});
     }
 
     showFavourites(videoArray) {
@@ -20,8 +20,11 @@
       this.options.currentPage = 0;
       this.options.onlyFavourites = false;
       this.videos.length = 0;
-      this.temporaryVideos.map(val => {
-        this.videos.push(val);
+      return this.StorageService.get('videos').then(videos => {
+        JSON.parse(JSON.stringify(videos)).map(val => {
+          this.videos.push(val);
+          //console.log(angular.copy(this.videos));
+        });
       });
     }
 
@@ -29,7 +32,6 @@
       this.options.currentPage = 0;
       let videosLength = this.videos.length;
       this.StorageService.remove('videos').catch(() => new Error('Error! Can\'t remove'));
-      this.temporaryVideos = [];
       return this.videos.splice(0, videosLength);
     }
 
@@ -37,13 +39,9 @@
       let demoYTVideos = ['https://www.youtube.com/watch?v=4JOAqRS_lms', 'https://youtu.be/vJ3a_AuEW18', 'https://vimeo.com/203494889', 'hO7mzO83N1Q', '-kYYuKbxa30', 'https://www.youtube.com/watch?v=rrDD5NTnoU4'];
       demoYTVideos.map(val => {
         this.VideoService.add(val).then((videoData) => {
-          if (!videoData) {return;}
+          if (!videoData) { return; }
           this.videos.push(videoData);
-          this.temporaryVideos = [];
-          this.videos.map(val => {
-            this.temporaryVideos.push(val);
-          });
-          return this.StorageService.set('videos', this.videos);
+          return this.StorageService.add('videos', videoData);
         });
       });
     }
