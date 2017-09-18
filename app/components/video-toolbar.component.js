@@ -8,8 +8,7 @@
       controller: 'VideoToolbarCtrl',
       bindings: {
         options: '<',
-        videos: '<',
-        temporaryVideos: '<'
+        videos: '<'
       }
     });
 
