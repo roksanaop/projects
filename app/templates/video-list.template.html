@@ -1,0 +1,58 @@
+<form name="videoForm" ng-submit="$ctrl.add($ctrl.link);" class="maxWidth">
+  <md-input-container class="md-block">
+    <label>Paste here your link e.g. https://www.youtube.com/watch?v=-UCHsqxBqwY, https://youtu.be/-UCHsqxBqwY or -UCHsqxBqwY</label>
+    <input ng-model="$ctrl.link" id="linkInput" type="text" name="videoLink" required>
+    <md-button type="submit" class="md-raised">Add</md-button>
+  </md-input-container>
+</form>
+
+<video-toolbar
+  options="$ctrl.options" videos="$ctrl.videos">
+</video-toolbar>
+
+<md-content>
+
+<!-- display LIST -->
+  <md-list ng-show="$ctrl.options.display === 'list'" class="maxWidth">
+    <md-list-item ng-repeat="video in ($ctrl.videos | orderBy:$ctrl.options.orderProp | paginationFilter:$ctrl.paginationFilter($ctrl.options.currentPage, $ctrl.options.currentPageSize) | limitTo:$ctrl.options.currentPageSize) track by $index" class="md-2-line">
+      <img class="md-avatar" ng-src="{{video.thumbnail}}" ng-click="$ctrl.watch(video)" alt="{{video.title}}">
+      <div class="md-list-item-text" layout="column">
+        <h3>{{video.title}}</h3>
+        <p>Views: {{video.viewCount}}</p>
+        <p>Likes: {{video.likeCount}}</p>
+        <p>Date of addition: {{video.date | date:'dd-M-yyyy  HH:mm'}}</p>
+      </div>
+      <div layout="column">
+        <md-button class="md-raised" ng-click="$ctrl.watch(video)">Watch</md-button>
+        <md-button class="md-raised" ng-click="$ctrl.remove(video)" ng-hide="$ctrl.options.onlyFavourites">Delete</md-button>
+        <md-button class="md-raised" ng-click="$ctrl.addToFavourites(video)" ng-hide="video.favourite">Add to fav</md-button>
+        <md-button class="md-raised" ng-click="$ctrl.addToFavourites(video)" ng-hide="!video.favourite || $ctrl.options.onlyFavourites">Remove from fav</md-button>
+      </div>
+    </md-list-item>
+  </md-list>
+<!-- /display LIST -->
+
+<!-- display GRID -->
+  <div ng-show="$ctrl.options.display === 'grid'" class="maxWidth">
+    <md-card ng-repeat="video in ($ctrl.videos | orderBy:$ctrl.options.orderProp | paginationFilter:$ctrl.paginationFilter() | limitTo:$ctrl.options.currentPageSize) track by $index" class="md-image-no-fill">
+      <img class="md-card-image" ng-src="{{video.thumbnail}}" ng-click="$ctrl.watch(video)" alt="{{video.title}}">
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">{{video.title}}</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <p>Views: {{video.viewCount}}</p>
+        <p>Likes: {{video.likeCount}}</p>
+        <p>Date of addition: {{video.date | date:'dd-M-yyyy  HH:mm'}}</p>
+      </md-card-content>
+      <md-card-actions layout="row" layout-align="end center">
+        <md-button class="md-raised" ng-click="$ctrl.watch(video)">Watch</md-button>
+        <md-button class="md-raised" ng-click="$ctrl.remove(video)" ng-hide="$ctrl.options.onlyFavourites">Delete</md-button>
+        <md-button class="md-raised" ng-click="$ctrl.addToFavourites(video)" ng-hide="video.favourite">Add to fav</md-button>
+        <md-button class="md-raised" ng-click="$ctrl.addToFavourites(video)" ng-hide="!video.favourite || $ctrl.options.onlyFavourites">Remove from fav</md-button>
+      </md-card-actions>
+    </md-card>
+  </div>
+<!-- /display GRID -->
+</md-content>

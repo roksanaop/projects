@@ -1,0 +1,28 @@
+{
+  "name": "angular-videos",
+  "version": "1.0.0",
+  "description": "Video storage application",
+  "repository": "https://github.com/roksanaop/projects/tree/angular-videos",
+  "main": "index.js",
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-animate": "^1.6.4",
+    "angular-aria": "^1.6.4",
+    "angular-material": "^1.1.4",
+    "angular-route": "^1.6.4",
+    "@uirouter/angularjs": "^1.0.3",
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "http-server": "^0.10.0",
+    "karma": "^1.7.0",
+    "karma-chrome-launcher": "^2.1.1",
+    "protractor": "^4.0.9"
+  },
+  "scripts": {
+    "prestart": "npm install",
+    "start": "http-server ./ -a localhost -p 8000 -c-1"
+  },
+  "author": "",
+  "license": "ISC"
+}

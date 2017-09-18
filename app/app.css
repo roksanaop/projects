@@ -1,0 +1,35 @@
+html {
+  font-size: 62.5%;
+  margin: 0;
+  padding: 0;
+  background: #001A23;
+}
+
+body {
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  font-family: 'Raleway', sans-serif;
+  font-size: 2rem;
+  color: #85CB33;
+  background: #001A23;
+  text-align: center;
+}
+
+.maxWidth {
+  max-width: 650px;
+  min-width: 350px;
+  text-align: center;
+  margin: 0 auto !important;
+}
+
+md-list-item {
+  border: 1px dotted #85CB33;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+md-list-item .md-avatar {
+  width: 100px !important;
+  height: 100px !important;
+}
