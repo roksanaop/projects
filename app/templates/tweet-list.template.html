@@ -1,0 +1,14 @@
+<div ng-show="$ctrl.tweeters" ng-repeat="tweet in ($ctrl.tweeters) track by $index">
+  <md-content>
+      <md-list-item ng-repeat="twit in (tweet) track by $index" class="md-2-line">
+        <div class="md-list-item-text" layout="row">
+          <p flex="70">{{twit.text}}</p>
+          <div flex="30" layout="column">
+            <h3>{{twit.user.name}}</h3>
+            <p>{{twit.created_at | date: 'dd-M-yyyy  HH:mm'}}</p>
+          </div>
+        </div>
+      </md-list-item>
+  </md-content>
+  <br />
+<div>

@@ -1,0 +1,45 @@
+html {
+  font-size: 62.5%;
+  margin: 0;
+  padding: 0;
+  background: #161925;
+}
+
+body {
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  font-family: 'Raleway', sans-serif;
+  font-size: 2rem;
+  color: #3F51B5;
+  background: #161925;
+  text-align: center;
+}
+
+.tick {
+  font-size: 1.6rem;
+}
+
+.borderMap {
+  fill: #CFD8DC;
+  stroke: #000000;
+  stroke-width: 0.5;
+}
+
+.bubble {
+  stroke: #000000;
+  stroke-width: 0.3;
+}
+
+.legend {
+  font-size: 1.6rem;
+}
+
+.line {
+  fill: none;
+  stroke-width: 1.6;
+}
+
+.word {
+  font-size: 1.6rem;
+}
