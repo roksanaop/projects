@@ -3,17 +3,20 @@
     <md-tabs md-dynamic-height md-border-top>
       <md-tab label="Bar graph">
         <md-content class="md-padding">
-          <div id="bar"></div>
+          <bar-graph 
+            bar-data="$ctrl.barData"></bar-graph>
         </md-content>
       </md-tab>
       <md-tab label="Map">
         <md-content class="md-padding">
-          <div id="map"></div>
+          <map-graph 
+            map-data="$ctrl.mapData" bar-data="$ctrl.barData"></map-graph>
         </md-content>
       </md-tab>
       <md-tab label="Linear graph">
         <md-content class="md-padding">
-          <div id="linear"></div>
+          <linear-graph 
+            linear-data="$ctrl.linearData"></linear-graph>
         </md-content>
       </md-tab>
     </md-tabs>
