@@ -10,22 +10,18 @@ const twitter = new Twitter({
     access_token_secret: 'CqfpNQ0j2O4PzQRaWz4yonJEIllX3rLMxRVUmSA1i78C0'
 });
 
-var clientStream = [];
-
+let clientStream = [];
 //GET stream JSON
 router.get('/filter/:query', (req, res, body) => {
-
-  var params = {
+  let params = {
     track: req.params.query
   }
-  var twit = [];
-
+  let twit = [];
+  
   twitter.stream('statuses/filter', params, (stream) => {
-      
     if (Object.keys(clientStream).length !== 0) {
       clientStream.destroy();
     }
-
     clientStream = stream;
     res.set('Content-Type', 'application/json');
     stream.on('data', (event) => {
@@ -44,20 +40,17 @@ router.get('/filter/:query', (req, res, body) => {
 
 //GET tweets JSON
 router.get('/search/:query', (req, res) => {
-  
   const MAX_TWEETS = 3;
-  var tweets = [];
-  var params = {
+  let tweets = [];
+  let params = {
     q: req.params.query,
     count: MAX_TWEETS
   }
-
   twitter.get('search/tweets', params, (err, data, resp) => {
     tweets = data.statuses;
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(tweets));
   });
-
 });
 
 module.exports = router;
