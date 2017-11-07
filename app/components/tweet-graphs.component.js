@@ -5,9 +5,10 @@
     .module('twitterApp')
     .component('tweetGraphs', {
       templateUrl: 'templates/tweet-graphs.template.html',
-      controller: 'TweetGraphsCtrl',
       bindings: {
-        streams: '<'
+        barData: '<',
+        mapData: '<',
+        linearData: '<'
       }
     });
 
