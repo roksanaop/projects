@@ -6,7 +6,7 @@
     .component('tweetList', {
       templateUrl: 'templates/tweet-list.template.html',
       bindings: {
-        tweeters: '<'
+        tweets: '<'
       }
     });
 
