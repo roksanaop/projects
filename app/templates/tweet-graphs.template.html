@@ -4,19 +4,19 @@
       <md-tab label="Bar graph">
         <md-content class="md-padding">
           <bar-graph 
-            bar-data="$ctrl.barData"></bar-graph>
+            bar-data="$ctrl.data.barData"></bar-graph>
         </md-content>
       </md-tab>
       <md-tab label="Map">
         <md-content class="md-padding">
           <map-graph 
-            map-data="$ctrl.mapData" bar-data="$ctrl.barData"></map-graph>
+            map-data="$ctrl.data.mapData" bar-data="$ctrl.data.barData"></map-graph>
         </md-content>
       </md-tab>
       <md-tab label="Linear graph">
         <md-content class="md-padding">
           <linear-graph 
-            linear-data="$ctrl.linearData"></linear-graph>
+            linear-data="$ctrl.data.linearData"></linear-graph>
         </md-content>
       </md-tab>
     </md-tabs>
