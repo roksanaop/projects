@@ -17,48 +17,68 @@
       });
       return data;
     }
+
     createBarData(bar, key, value, color) {
       //create JSON for Bar Graph {'word': 'text', 'freq': stream.length, 'color': 'color'}
       bar.push({word: key, freq: value.length, color: color});
       return bar;
     }
+
     createMapData(map, key, value, color) {
       // create JSON for Map Graph {'word': 'text', 'coords': [lon, lat], 'color': 'color'}
       value.forEach((twit) => {
+        let coordinates;
         if (twit.coordinates) {
-          return map.push({word: key, coords: twit.coordinates.coordinates, color: color});
+          coordinates = twit.coordinates.coordinates;
         }
         if (twit.geo) {
-          return map.push({word: key, coords: twit.geo.coordinates, color: color});
+          coordinates = twit.geo.coordinates;
         }
         if (twit.place) {
-          return map.push({word: key, coords: twit.place.bounding_box.coordinates[0][0], color: color});
+          coordinates = twit.place.bounding_box.coordinates[0][0];
+        }
+        if (coordinates) {
+          map.push({word: key, coords: coordinates, color: color});
         }
       });
       return map;
     }
+
     createLinearData(linear, key, value, color) {
       //create JSON for Linear Graph {'word': 'text', 'color': 'color', data: [{'time': 'time1', 'freq': stream.length}, {'time': 'time2', 'freq': stream.length}]}
+      const MINUTES_IN_HOUR = 60;
+      const INDEX_OF = {
+        TWIT_START_HOUR: 11,
+        TWIT_END_HOUR: 13,
+        TWIT_START_MINUTES: 14,
+        TWIT_END_MINUTES: 16,
+        LOCAL_START_MINUTES: 3,
+        LOCAL_END_MINUTES: 5
+      };
       let time = 0;
       let freqData = [];
       let wordData = [];
       let offset = new Date().getTimezoneOffset();
-      let timezone = Math.floor((Math.abs(offset/60)));
+      let timezone = Math.floor((Math.abs(offset/MINUTES_IN_HOUR)));
       value.forEach((twit) => {
-        if (time === 0) {
-          time = twit.created_at.substring(11, 16);
-        }
-        if (time.substring(3, 5) < twit.created_at.substring(14, 16)) {
-          let hourInZone = +twit.created_at.substring(11, 13) + timezone;
-          let timeInZone = hourInZone + twit.created_at.substring(13, 16);
-          wordData.push({time: timeInZone, freq: freqData.length}); 
-          freqData = [];
-          time = twit.created_at.substring(11, 16);
-        }
-        freqData.push(twit.created_at.substring(11, 16));
+        checkTwitTime(twit);
       });
       linear.push({word: key, data: wordData, color: color}); 
       return linear;
+
+      function checkTwitTime(twit) {
+        if (time === 0) {
+          time = twit.created_at.substring(INDEX_OF.TWIT_START_HOUR, INDEX_OF.TWIT_END_MINUTES);
+        }
+        if (time.substring(INDEX_OF.LOCAL_START_MINUTES, INDEX_OF.LOCAL_END_MINUTES) < twit.created_at.substring(INDEX_OF.TWIT_START_MINUTES, INDEX_OF.TWIT_END_MINUTES)) {
+          let hourInZone = +twit.created_at.substring(INDEX_OF.TWIT_START_HOUR, INDEX_OF.TWIT_END_HOUR) + timezone;
+          let timeInZone = hourInZone + twit.created_at.substring(INDEX_OF.TWIT_END_HOUR, INDEX_OF.TWIT_END_MINUTES);
+          wordData.push({time: timeInZone, freq: freqData.length}); 
+          freqData = [];
+          time = twit.created_at.substring(INDEX_OF.TWIT_START_HOUR, INDEX_OF.TWIT_END_MINUTES);
+        }
+        freqData.push(twit.created_at.substring(INDEX_OF.TWIT_START_HOUR, INDEX_OF.TWIT_END_MINUTES));
+      }
     }
   }
 
