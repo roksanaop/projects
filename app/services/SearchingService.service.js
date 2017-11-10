@@ -2,21 +2,16 @@
   'use strict';
 
   class SearchingService {
-    constructor($resource, Oboe) {
-      Object.assign(this, {$resource, Oboe});
-      this.streams = [];
+    constructor(Oboe) {
+      Object.assign(this, {Oboe});
     }
-    searchTweets(params) {
-      let tweets = this.$resource('/tweets/:action/:query', params);
-      return tweets.query({}, (res) => {
-        return res;
-      });
-    }
+
     streamTweets(words, callback) {
+      let streams = [];
       oboe('/tweets/filter/' + words.join())
         .node('$!.created_at', (tweet) => {
-          this.streams.push(tweet);
-          callback(this.streams);
+          streams.push(tweet);
+          callback(streams);
         });
     }
   }
