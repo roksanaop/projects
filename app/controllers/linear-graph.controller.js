@@ -2,7 +2,8 @@
   'use strict';
 
   class LinearGraphCtrl {
-    constructor() {
+    constructor(GraphService) {
+      Object.assign(this, {GraphService});
       // set the dimensions of the canvas
       this.dimensions = {
         width: 800,
@@ -15,6 +16,7 @@
         }
       }
     }
+
     $onChanges(changes) {
       if (changes.linearData) {
         this.linearData = angular.copy(this.linearData);
@@ -24,14 +26,17 @@
         this.drawLinearGraph(this.linearData);
       }
     }
+
     drawLinearGraph(linearData) {
       // remove old data
       d3.select('#linear').select('svg').remove();
       let parsedData = this.parseData(linearData);
       let axes = this.setAxes(parsedData);
-      this.drawGraphArea(axes);
+      this.GraphService.addSVG('#linear', this.dimensions);
+      this.GraphService.addAxis('#linear', this.dimensions, axes, 1, '%H:%M');
       this.addData(parsedData, axes);
     }
+
     parseData(linearData) {
       let parseTime = d3.timeParse('%H:%M');
       linearData.forEach((element) => {
@@ -42,6 +47,7 @@
       });
       return linearData;
     }
+
     setAxes(linearData) {
       // set the ranges
       let axis = {
@@ -64,31 +70,7 @@
       axis.y.domain([0, maxY]);
       return axis;
     }
-    drawGraphArea(axis) {
-      // add the SVG element
-      let svg = d3.select('#linear')
-        .append('svg')
-          .attr('width', this.dimensions.width + this.dimensions.margin.left + this.dimensions.margin.right)
-          .attr('height', this.dimensions.height + this.dimensions.margin.top + this.dimensions.margin.bottom)
-        .append('g')
-          .attr('transform', 'translate(' + this.dimensions.margin.left + ',' + this.dimensions.margin.top + ')');
-      // add axis
-      svg.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0,' + this.dimensions.height + ')')
-        .call(d3.axisBottom(axis.x)
-          .ticks(1)
-          .tickFormat(d3.timeFormat('%H:%M')));
-      svg.append('g')
-        .attr('class', 'y axis')
-        .call(d3.axisLeft(axis.y));
-      svg.append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', -50)
-        .attr('x', -140)
-        .style('text-anchor', 'end')
-        .text('Amount of tweets');
-    }
+    
     addData(linearData, axis) {
       // define the line
       let valueLine = d3.line()
