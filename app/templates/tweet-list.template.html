@@ -1,4 +1,4 @@
-<div ng-show="$ctrl.tweets" ng-repeat="tweet in ($ctrl.tweets) track by $index">
+<div ng-show="$ctrl.tweets" ng-repeat="tweet in ($ctrl.tweets) track by $index" class="list">
   <md-content>
       <md-list-item ng-repeat="twit in (tweet) track by $index" class="md-2-line">
         <div class="md-list-item-text" layout="row">
@@ -10,5 +10,4 @@
         </div>
       </md-list-item>
   </md-content>
-  <br />
 <div>
