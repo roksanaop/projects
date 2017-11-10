@@ -16,6 +16,10 @@ body {
   text-align: center;
 }
 
+.list {
+  margin-bottom: 16px;
+}
+
 .tick {
   font-size: 1.6rem;
 }
