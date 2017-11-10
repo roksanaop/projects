@@ -2,17 +2,22 @@
   'use strict';
 
   class TwitterSearcherCtrl {
-    constructor($scope, DataCreatorService, SearchingService) {
-      Object.assign(this, {$scope, DataCreatorService, SearchingService});
+    constructor($scope, DataCreatorService, SearchingService, TwitterService) {
+      Object.assign(this, {$scope, DataCreatorService, SearchingService, TwitterService});
       this.tweets = [];
       this.words = [{
         id: 1
       }];
-      this.colors = ['#FFFF4D', '#4D4DFF', '#FF4D4D', '#4DFF4D']; // colors for different words
-      this.barData = [];
-      this.mapData = [];
-      this.linearData = [];
+      this.data = {
+        barData: [],
+        mapData: [],
+        linearData: []
+      }
+      this.init({
+        colors: ['#FFFF4D', '#4D4DFF', '#FF4D4D', '#4DFF4D'] // colors for different words
+      });
     }
+
     add(word, inputNumber) {
       const MAX_INPUT = 4;
       if (this.words.length < MAX_INPUT) {
@@ -31,28 +36,30 @@
         query: word
       }
       // start search tweets
-      let tweetArray = this.SearchingService.searchTweets(params);
-      if (tweetArray) {
-        if(this.tweets[inputNumber - 1]) {
-          return this.tweets.splice(inputNumber - 1, 1, tweetArray);
-        }
-        this.tweets.push(tweetArray);
-      }
+      this.TwitterService.searchTweets(params)
+        .then((tweetArray) => {
+          if(this.tweets[inputNumber - 1]) {
+            return this.tweets.splice(inputNumber - 1, 1, tweetArray);
+          }
+          this.tweets.push(tweetArray);
+        });
     }
+
     groupStreamByWord(stream, words) {
       let sortedStream = {};
-      this.$scope.$apply();
       words.forEach((word) => {
         if (word === void 0 || word === "") {
           return;
         }
         sortedStream[word] = [];
         sortedStream[word] = groupData(stream, sortedStream[word], word);
-        let allData = this.DataCreatorService.createData(sortedStream, this.colors);
-        this.barData = allData.bar
-        this.mapData = allData.map;
-        this.linearData = allData.linear;
+        let allData = this.DataCreatorService.createData(sortedStream, this.config.colors);
+        this.data.barData = allData.bar
+        this.data.mapData = allData.map;
+        this.data.linearData = allData.linear;
       });
+      this.$scope.$apply();
+
       function groupData(stream, sortedWord, word) {
         // group data from stream on different variables
         stream.forEach((data) => {
@@ -65,6 +72,10 @@
         });
         return sortedWord;
       }
+    }
+
+    init(config) {
+      Object.assign(this, {config});
     }
   }
 
