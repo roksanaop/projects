@@ -2,7 +2,8 @@
   'use strict';
 
   class BarGraphCtrl {
-    constructor() {
+    constructor(GraphService) {
+      Object.assign(this, {GraphService});
       // set the dimensions of the canvas
       this.dimensions = {
         width: 800,
@@ -15,6 +16,7 @@
         }
       }
     }
+
     $onChanges(changes) {
       if (changes.barData) {
         this.barData = angular.copy(this.barData);
@@ -24,13 +26,16 @@
         this.drawBarGraph(this.barData);
       }
     }
+
     drawBarGraph(barData) {
       // remove old data
       d3.select('#bar').select('svg').remove();
       let axes = this.setAxes(barData);
-      this.drawGraphArea(axes);
+      this.GraphService.addSVG('#bar', this.dimensions);
+      this.GraphService.addAxis('#bar', this.dimensions, axes);
       this.addData(barData, axes);
     }
+
     setAxes(barData) {
       // set the ranges
       let axis = {
@@ -48,29 +53,7 @@
       }
       return axis;
     }
-    drawGraphArea(axis) {
-      // add the SVG element
-      let svg = d3.select('#bar')
-        .append('svg')
-          .attr('width', this.dimensions.width + this.dimensions.margin.left + this.dimensions.margin.right)
-          .attr('height', this.dimensions.height + this.dimensions.margin.top + this.dimensions.margin.bottom)
-        .append('g')
-          .attr('transform', 'translate(' + this.dimensions.margin.left + ',' + this.dimensions.margin.top + ')');
-      // add axis
-      svg.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0,' + this.dimensions.height + ')')
-        .call(d3.axisBottom(axis.x));
-      svg.append('g')
-        .attr('class', 'y axis')
-        .call(d3.axisLeft(axis.y));
-      svg.append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', -50)
-        .attr('x', -140)
-        .style('text-anchor', 'end')
-        .text('Amount of tweets');
-    }
+    
     addData(barData, axis) {
       // add bar chart
       var selection = d3.select('#bar').select('svg').select('g').selectAll('bar')
