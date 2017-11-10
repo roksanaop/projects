@@ -6,9 +6,7 @@
     .component('tweetGraphs', {
       templateUrl: 'templates/tweet-graphs.template.html',
       bindings: {
-        barData: '<',
-        mapData: '<',
-        linearData: '<'
+        data: '<'
       }
     });
 
