@@ -10,12 +10,14 @@
       this.projection = d3.geoMercator().scale(130).translate([this.dimension.width/2.5, this.dimension.height/1.5]); // set the Mercator projection
       this.drawMap();
     }
+
     $onChanges(changes) {
       if (changes.mapData) {
         this.mapData = angular.copy(this.mapData);
         this.addData(this.mapData, this.barData);
       }
     }
+
     drawMap() {
       // add the SVG element
       let svg = d3.select('#map')
@@ -34,22 +36,28 @@
             .attr('d', path)
       });
     }
+
     addData(mapData, legendData) {
       // remove old data
       d3.select('#map').select('svg').select('g').selectAll('.bubble').remove();
       d3.select('#map').select('svg').select('g').selectAll('.legend').remove();
-      this.addGraph(mapData);
+      let parsedData = this.parseData(mapData);
+      this.addGraph(parsedData);
       this.addLegend(legendData);
     }
-    addGraph(mapData) {
+
+    parseData(mapData) {
       // add data and transform coordinates
-      mapData = mapData.map((d) => {
+      return mapData.map((d) => {
         return {word: d.word, coords: this.projection([+d.coords[0], +d.coords[1]]), color: d.color};
       });
+    }
+
+    addGraph(parseData) {
       // add circles from data
       let bubble = d3.select('#map').select('svg').select('g')
         .selectAll('.bubble')
-        .data(mapData)
+        .data(parseData)
         .enter()
         .append('g')
           .attr('class', 'bubble')
@@ -59,6 +67,7 @@
         .attr('r', 4)
         .style('fill', (d) => { return d.color; });
     }
+
     addLegend(legendData) {
       // set starter legend position and offset for legend elements
       let startPosition = 325;
