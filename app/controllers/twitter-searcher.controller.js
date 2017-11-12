@@ -5,9 +5,7 @@
     constructor($scope, DataCreatorService, SearchingService, TwitterService) {
       Object.assign(this, {$scope, DataCreatorService, SearchingService, TwitterService});
       this.tweets = [];
-      this.words = [{
-        id: 1
-      }];
+      this.words = [{}];
       this.data = {
         barData: [],
         mapData: [],
@@ -19,6 +17,9 @@
     }
 
     add(word, inputNumber) {
+      if (this.words.length === 1) {
+        this.words[0].id = this.words.length;
+      }
       const MAX_INPUT = 4;
       if (this.words.length < MAX_INPUT) {
         this.words.push({
