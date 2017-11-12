@@ -1,0 +1,17 @@
+<div layout="row">
+  <div ng-repeat="word in $ctrl.words track by $index">
+    <form name="twitterInput" ng-submit="$ctrl.add(word.word, word.id)">
+      <md-input-container md-colors="{color: 'indigo'}">
+        <label md-colors="{color: 'blue-grey-400'}">Write a word for more twitter information</label>
+        <input ng-model="word.word" type="text" name="twitter{{$index + 1}}" md-colors="{color: 'indigo'}" required>
+        <md-button type="submit" class="md-flat">Search</md-button>
+      </md-input-container>
+    </form>
+  </div>
+</div>
+
+<tweet-list
+  tweets="$ctrl.tweets"></tweet-list>
+
+<tweet-graphs
+  data="$ctrl.data"></tweet-graphs>

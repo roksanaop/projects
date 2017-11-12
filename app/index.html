@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="twitterApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Visualize data from Twitter</title>
+    <link rel="stylesheet" type="text/css" href="app.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/angular-material/angular-material.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway">
+
+    <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js" defer></script>
+    <script type="text/javascript" src="node_modules/angular-aria/angular-aria.min.js" defer></script>
+    <script type="text/javascript" src="node_modules/angular-material/angular-material.min.js" defer></script>
+    <script type="text/javascript" src="node_modules/angular-resource/angular-resource.min.js" defer></script>
+    <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js" defer></script>
+    <script src="/bower_components/oboe/dist/oboe-browser.min.js" defer></script>
+    <script src="/bower_components/angular-oboe/dist/angular-oboe.min.js" defer></script>
+    <script src="https://d3js.org/d3.v4.min.js" defer></script>
+
+    <script type="text/javascript" src="app.module.js" defer></script>
+    <script type="text/javascript" src="services/DataCreatorService.service.js" defer></script>
+    <script type="text/javascript" src="services/GraphService.service.js" defer></script>
+    <script type="text/javascript" src="services/SearchingService.service.js" defer></script>
+    <script type="text/javascript" src="services/TwitterService.service.js" defer></script>
+
+    <script type="text/javascript" src="components/twitter-searcher.component.js" defer></script>
+    <script type="text/javascript" src="components/tweet-list.component.js" defer></script>
+    <script type="text/javascript" src="components/tweet-graphs.component.js" defer></script>
+    <script type="text/javascript" src="components/bar-graph.component.js" defer></script>
+    <script type="text/javascript" src="components/map-graph.component.js" defer></script>
+    <script type="text/javascript" src="components/linear-graph.component.js" defer></script>
+
+    <script type="text/javascript" src="controllers/twitter-searcher.controller.js" defer></script>
+    <script type="text/javascript" src="controllers/bar-graph.controller.js" defer></script>
+    <script type="text/javascript" src="controllers/map-graph.controller.js" defer></script>
+    <script type="text/javascript" src="controllers/linear-graph.controller.js" defer></script>
+
+  </head>
+  <body>
+    <header>
+      <h1>Twitter analysis</h1>
+    </header>
+    
+    <twitter-searcher></twitter-searcher>
+
+  </body>
+</html>

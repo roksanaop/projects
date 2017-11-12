@@ -1,0 +1,24 @@
+<div>
+  <md-content>
+    <md-tabs md-dynamic-height md-border-top>
+      <md-tab label="Bar graph">
+        <md-content class="md-padding">
+          <bar-graph 
+            bar-data="$ctrl.data.barData"></bar-graph>
+        </md-content>
+      </md-tab>
+      <md-tab label="Map">
+        <md-content class="md-padding">
+          <map-graph 
+            map-data="$ctrl.data.mapData" bar-data="$ctrl.data.barData"></map-graph>
+        </md-content>
+      </md-tab>
+      <md-tab label="Linear graph">
+        <md-content class="md-padding">
+          <linear-graph 
+            linear-data="$ctrl.data.linearData"></linear-graph>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>
