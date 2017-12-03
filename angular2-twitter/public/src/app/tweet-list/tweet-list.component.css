@@ -1,0 +1,8 @@
+.list {
+  /*border-style: ;*/
+}
+
+.flexbox {
+  display: flex;
+  align-items: center;
+}

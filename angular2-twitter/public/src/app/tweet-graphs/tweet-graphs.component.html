@@ -1,0 +1,20 @@
+<ngb-tabset justify="fill">
+  <ngb-tab title="Bar graph">
+    <ng-template ngbTabContent>
+      <app-bar-graph  class="graphs"
+        [barData]="data.barData"></app-bar-graph>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="Map">
+    <ng-template ngbTabContent>
+      <app-map-graph  class="graphs"
+        [mapData]="data.mapData" [barData]="data.barData"></app-map-graph>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="Linear graph">
+    <ng-template ngbTabContent>
+      <app-linear-graph  class="graphs"
+        [linearData]="data.linearData"></app-linear-graph>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>

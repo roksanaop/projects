@@ -1,0 +1,15 @@
+<div *ngFor="let word of words">
+  <form name="twitterInput" (ngSubmit)="add(word.word, word.id)">
+    <div>
+      <label for="typehead-basic">Write a word for more twitter information</label>
+      <input id="typehead-basic" [(ngModel)]="word.word" type="text" name="twitter" placeholder="Twitter word" required>
+      <button class="btn btn-outline-primary btn-lg" type="submit" ngbButtonLabel>Search</button>
+    </div>
+  </form>
+</div>
+
+<app-tweet-list
+  [tweets]="tweets"></app-tweet-list>
+
+<app-tweet-graphs
+  [data]="data"></app-tweet-graphs>

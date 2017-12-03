@@ -1,0 +1,14 @@
+path.borderMap {
+  fill: #CFD8DC;
+  stroke: #000000;
+  stroke-width: 0.5;
+}
+
+.bubble {
+  stroke: #000000;
+  stroke-width: 0.3;
+}
+
+.legend {
+  font-size: 1.6rem;
+}
