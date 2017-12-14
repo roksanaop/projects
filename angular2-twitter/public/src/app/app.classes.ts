@@ -1,3 +1,9 @@
+export class CreatedData { 
+  key: string;
+  value: any[];
+  color: string;
+}
+
 export class GraphData { 
   barData: BarData[];
   mapData: MapData[];
