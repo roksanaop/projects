@@ -10,40 +10,36 @@ import { BarData, Dimensions, MapData } from '../app.classes';
 })
 export class MapGraphComponent implements OnInit {
 
-  dimension: Dimensions;
-  projection: any;
-
-  constructor() { 
-    this.dimension = {
-      width: 1000,
-      height: 500
-    }
-    this.projection = d3.geoMercator().scale(130).translate([this.dimension.width/2.5, this.dimension.height/1.5]); // set the Mercator projection
-    this.drawMap();
-  }
+  dimension: Dimensions = {
+    width: 1000,
+    height: 500
+  };
+  // set the Mercator projection
+  projection: any = d3.geoMercator().scale(130).translate([this.dimension.width/2.5, this.dimension.height/1.5]);
 
   @Input() mapData: MapData[];
   @Input() barData: BarData[];
 
-  ngOnInit() {
+  constructor() {   }
+
+  ngOnInit() {  
     this.drawMap();
   }
 
   ngOnChanges(changes) {
     if (changes.mapData) {
-      this.mapData = this.mapData;
       this.addData(this.mapData, this.barData);
     }
   }
 
   drawMap() {
     // add the SVG element
-    let svg = d3.select('#map')
+    const svg = d3.select('#map')
       .append('svg')
         .attr('width', this.dimension.width)
         .attr('height', this.dimension.height)
       .append('g');
-    let path = d3.geoPath().projection(this.projection);
+    const path = d3.geoPath().projection(this.projection);
     // draw the map
     d3.json('https://gist.githubusercontent.com/manishmshiva/92aaeccbc8cc7146d2d5d6deefb3095a/raw/23c771129805836c1cecdc7837e6d0b28cc341fc/world.json', (geo_data) => {
       svg.selectAll('path')
@@ -81,10 +77,10 @@ export class MapGraphComponent implements OnInit {
       .append('g')
         .attr('class', 'bubble')
     bubble.append('circle')
-      .attr('cx', (d) => { return d['coords'][0]; })
-      .attr('cy', (d) => { return d['coords'][1]; })
+      .attr('cx', d => d['coords'][0] )
+      .attr('cy', d => d['coords'][1] )
       .attr('r', 4)
-      .style('fill', (d) => { return d['color']; });
+      .style('fill', d => d['color'] );
   }
 
   addLegend(legendData: BarData[]): void {
@@ -98,7 +94,7 @@ export class MapGraphComponent implements OnInit {
       .enter()
       .append('g')
         .attr('class', 'legend')
-        .attr('transform', (d) => {
+        .attr('transform', d => {
           let newPosition = startPosition;
           startPosition += OFFSET;
           return 'translate(0, ' + newPosition + ')';
@@ -108,12 +104,12 @@ export class MapGraphComponent implements OnInit {
       .attr('cx', '10px')
       .attr('cy', '10px')
       .attr('r', 4)
-      .style('fill', (d) => { return d['color']; })
+      .style('fill', d => d['color'] )
       .style('stroke', '#000');
     // add the text for legend
     legend.append('text')
       .attr('x', 25)
       .attr('y', 15)
-      .text((d) => { return d['word']; });
+      .text(d => d['word'] );
   }
 }
