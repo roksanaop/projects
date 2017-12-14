@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { CreatedData } from './app.classes';
+
 @Injectable()
 export class DataCreatorService {
 
@@ -12,42 +14,38 @@ export class DataCreatorService {
       map: [],
       linear: []
     }
-    Object.entries(sortedData).forEach(([key, value]) => {
-      data.bar = this.createBarData(data.bar, key, value, colors[i]);
-      data.map = this.createMapData(data.map, key, value, colors[i]);
-      data.linear = this.createLinearData(data.linear, key, value, colors[i]);
-      i++;
-    });
+    data = Object
+      .entries(sortedData)
+      .reduce((acc, [key, value]) => {
+        acc.bar = acc.bar.concat(this.createBarData({ key, value, color: colors[acc.i] }));
+        acc.map = acc.map.concat(this.createMapData({ key, value, color: colors[acc.i] }));
+        acc.linear = acc.linear.concat(this.createLinearData({ key, value, color: colors[acc.i] }));
+        acc.i++;
+        return acc;
+      }, { bar: [], map: [], linear: [], i: 0 });
     return data;
   }
 
-  createBarData(bar: Object[], key: string, value: any[], color: string): Object[] {
+  createBarData(createData: CreatedData): Object[] {
     //create JSON for Bar Graph {'word': 'text', 'freq': stream.length, 'color': 'color'}
-    bar.push({word: key, freq: value.length, color: color});
+    let bar = [];
+    bar.push({word: createData.key, freq: createData.value.length, color: createData.color});
     return bar;
   }
 
-  createMapData(map: Object[], key: string, value: any[], color: string): Object[] {
+  createMapData(createData: CreatedData): Object[] {
     // create JSON for Map Graph {'word': 'text', 'coords': [lon, lat], 'color': 'color'}
-    value.forEach((twit) => {
-      let coordinates;
-      if (twit.coordinates) {
-        coordinates = twit.coordinates.coordinates;
-      }
-      if (twit.geo) {
-        coordinates = twit.geo.coordinates;
-      }
-      if (twit.place) {
-        coordinates = twit.place.bounding_box.coordinates[0][0];
-      }
+    let map = [];
+    createData.value.forEach((twit) => {
+      const coordinates = (twit.place && twit.place.bounding_box.coordinates[0][0]) || (twit.geo && twit.geo.coordinates) || (twit.coordinates && twit.coordinates.coordinates);
       if (coordinates) {
-        map.push({word: key, coords: coordinates, color: color});
+        map.push({word: createData.key, coords: coordinates, color: createData.color});
       }
     });
     return map;
   }
 
-  createLinearData(linear: Object[], key: string, value: any[], color: string): Object[] {
+  createLinearData(createData: CreatedData): Object[] {
     //create JSON for Linear Graph {'word': 'text', 'color': 'color', data: [{'time': 'time1', 'freq': stream.length}, {'time': 'time2', 'freq': stream.length}]}
     const MINUTES_IN_HOUR = 60;
     const INDEX_OF = {
@@ -63,13 +61,8 @@ export class DataCreatorService {
     let wordData = [];
     let offset = new Date().getTimezoneOffset();
     let timezone = Math.floor((Math.abs(offset/MINUTES_IN_HOUR)));
-    value.forEach((twit) => {
-      checkTwitTime(twit);
-    });
-    linear.push({word: key, data: wordData, color: color}); 
-    return linear;
-
-    function checkTwitTime(twit) {
+    let linear = [];
+    createData.value.forEach((twit) => {
       if (time === 0) {
         time = twit.created_at.substring(INDEX_OF.TWIT_START_HOUR, INDEX_OF.TWIT_END_MINUTES);
       }
@@ -81,6 +74,8 @@ export class DataCreatorService {
         time = twit.created_at.substring(INDEX_OF.TWIT_START_HOUR, INDEX_OF.TWIT_END_MINUTES);
       }
       freqData.push(twit.created_at.substring(INDEX_OF.TWIT_START_HOUR, INDEX_OF.TWIT_END_MINUTES));
-    }
+    });
+    linear.push({word: createData.key, data: wordData, color: createData.color}); 
+    return linear;
   }
 }
