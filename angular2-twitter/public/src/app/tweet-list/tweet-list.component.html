@@ -1,0 +1,11 @@
+<div *ngIf="tweets">
+  <div *ngFor="let tweet of tweets" class="list">
+    <div *ngFor="let twit of tweet" class="flexbox">
+      <p>{{twit.text}}</p>
+      <div>
+        <h3>{{twit.user.name}}</h3>
+        <p>{{twit.created_at | date: 'dd-M-yyyy  HH:mm'}}</p>
+      </div>
+    </div>
+  </div>
+<div>
