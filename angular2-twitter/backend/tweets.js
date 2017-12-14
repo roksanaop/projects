@@ -51,7 +51,7 @@ router.get('/search/:query', (req, res) => {
   twitter.get('search/tweets', params, (err, data, resp) => {
     tweets = data.statuses;
     res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(tweets));
+    res.json(tweets);
   });
 });
 
