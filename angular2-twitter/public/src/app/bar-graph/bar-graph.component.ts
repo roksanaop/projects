@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import * as d3 from 'd3';
 
 import { GraphService } from '../graph.service';
@@ -9,31 +9,26 @@ import { Dimensions, BarData } from '../app.classes';
   templateUrl: './bar-graph.component.html',
   styleUrls: ['./bar-graph.component.css']
 })
-export class BarGraphComponent implements OnInit {
-
-  dimensions: Dimensions;
-
-  constructor(private graphService: GraphService) { 
-    // set the dimensions of the canvas
-    this.dimensions = {
-      width: 800,
-      height: 400,
-      margin: {
-        top: 20, 
-        right: 30, 
-        bottom: 30, 
-        left: 80
-      }
+export class BarGraphComponent {
+  
+  // set the dimensions of the canvas
+  dimensions: Dimensions = {
+    width: 800,
+    height: 400,
+    margin: {
+      top: 20, 
+      right: 30, 
+      bottom: 30, 
+      left: 80
     }
-  }
+  };
 
   @Input() barData: BarData[];
 
-  ngOnInit() {  }
+  constructor(private graphService: GraphService) {   }
 
   ngOnChanges(changes) {
     if (changes.barData) {
-      this.barData = this.barData;
       if (this.barData.length <= 0) {
         return;
       }
@@ -60,9 +55,9 @@ export class BarGraphComponent implements OnInit {
       .rangeRound([this.dimensions.height, 0])
     }
     // scale the range of the data
-    let minY = d3.min(barData, (d) => { return d['freq']; });
-    let maxY = d3.max(barData, (d) => { return d['freq']; });
-    axis.x.domain(barData.map((d) => { return d.word; }));
+    let minY = d3.min(barData, d => d['freq'] );
+    let maxY = d3.max(barData, d => d['freq'] );
+    axis.x.domain(barData.map(d => d.word ));
     axis.y.domain([0, maxY]);
     if (minY >= 100) {
       axis.y.domain([100, maxY]);
@@ -77,11 +72,11 @@ export class BarGraphComponent implements OnInit {
     selection.exit().remove();
     selection.enter()
       .append('rect')
-        .style('fill', (d) => { return d['color']; })
+        .style('fill', d => d['color'] )
         .attr('class', 'bar')
-        .attr('x', (d) => { return axis.x(d['word']); })
+        .attr('x', d => axis.x(d['word']) )
         .attr('width', axis.x.bandwidth())
-        .attr('y', (d) => { return axis.y(d['freq']); })
-        .attr('height', (d) => { return this.dimensions.height - axis.y(d['freq']); });
+        .attr('y', d => axis.y(d['freq']) )
+        .attr('height', d => { return this.dimensions.height - axis.y(d['freq']); });
   }
 }
