@@ -32,12 +32,15 @@ export class GraphService {
       .text('Amount of tweets');
 
     function checkTicks(ticks, timeFormat) {
-      if (ticks && timeFormat) {
-        return d3.axisBottom(axis.x)
-          .ticks(ticks)
-          .tickFormat(d3.timeFormat(timeFormat));
+      function check() {
+        if (ticks && timeFormat) {
+          return d3.axisBottom(axis.x)
+            .ticks(ticks)
+            .tickFormat(d3.timeFormat(timeFormat));
+        }
+        return d3.axisBottom(axis.x);
       }
-      return d3.axisBottom(axis.x);
+      return check();
     }
   }
 }
