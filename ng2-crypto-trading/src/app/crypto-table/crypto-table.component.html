@@ -1,0 +1,21 @@
+<h5>Ostatnia aktualizacja: {{lastUpdate | date:'dd-M-yyyy  HH:mm:ss'}}</h5>
+<table border="1" frame="box" rules="all" class="center-align">
+  <thead>
+    <tr class="tab-head" id="head" >
+      <th *ngFor="let header of headers" class="thead" id="{{header.id}}" (click)="sort(header.crypto)">
+        {{header.html}} 
+        <i class="fa" [ngClass]="whichFaClass(header.crypto)" aria-hidden="true"></i> 
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let crypto of data | orderBy: {column: activeColumn, direction: direction}">
+      <th headers="name" class="white">{{crypto.long}}</th>
+      <td headers="symbol">{{crypto.short}}</td>
+      <td headers="price">{{crypto.price | currency:'USD':'true':'1.4-4'}}</td>
+      <td headers="cap">{{crypto.mktcap | currency:'USD':'true':'1.0-0'}}</td>
+      <td headers="volume">{{crypto.usdVolume | currency:'USD':'true':'1.0-0'}}</td>
+      <td headers="change" [className]="whichChangeClass(crypto.cap24hrChange)">{{crypto.cap24hrChange | number:'1.2-2'}}%</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+html {
+  font-size: 62.5%;
+  margin: 0;
+  padding: 0;
+  background: #161925;
+}
+
+body {
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  font-family: 'Raleway', sans-serif;
+  font-size: 2rem;
+  color: #007bff;
+  background: #161925;
+  text-align: center;
+}
+
+.link-styling {
+  text-decoration: none;
+  color: #FFFFFF; 
+}
+
+.tab-head {
+  background: #FFFFFF;
+  color: #161925;
+}
+
+.thead {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.white {
+  color: #FFFFFF; 
+}
+
+.green {
+  color: green; 
+}
+
+.red {
+  color: red; 
+}
+
+.center-align {
+  margin-left: auto;
+  margin-right: auto;
+}
