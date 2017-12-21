@@ -22,6 +22,10 @@ body {
   color: #FFFFFF; 
 }
 
+.info {
+  font-size: 1.5rem;
+}
+
 .tab-head {
   background: #FFFFFF;
   color: #161925;
@@ -37,11 +41,11 @@ body {
 }
 
 .green {
-  color: green; 
+  color: #00FF00; 
 }
 
 .red {
-  color: red; 
+  color: #FF0000; 
 }
 
 .center-align {
