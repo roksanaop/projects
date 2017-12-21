@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
 
-import { CoincapService } from '../coincap.service';
-import { SortingService } from '../sorting.service';
+import { CoincapService } from '../services/coincap.service';
+import { SortingService } from '../services/sorting.service';
 import { config } from '../app.config';
 
 import { CryptoData, Headers } from '../app.classes';
@@ -16,6 +16,9 @@ export class CryptoTableComponent implements OnInit {
 
   data: CryptoData[] = [];
   lastUpdate: Date;
+  nextUpdate: number = 15;
+  counter: number = 0;
+  counterWord: string;
   activeColumn: string;
   isDesc: boolean = false;
   direction: number;
@@ -26,16 +29,27 @@ export class CryptoTableComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
+    this.updateTime();
+    this.update();
+  }
+
+  ngOnDestroy() {
+    this.getData()
+      .unsubscribe();
+    this.updateTime()
+      .unsubscribe();
     this.update()
-      .subscribe();
+      .unsubscribe();
   }
 
   getData() {
     return this.coincapService.search()
       .subscribe(coincapResp => {
         let coincapArr = coincapResp.json();
-        this.data = [];
         this.lastUpdate = new Date();
+        this.counter++;
+        this.counterWord = (this.counter === 1 ? 'raz' : 'razy');
+        this.nextUpdate = 15;
         this.data = coincapArr;
       }, error => {
         alert('Serwis coincap.io może chwilowo nie działać lub spóźniać się z odpowiedzią.');
@@ -47,10 +61,20 @@ export class CryptoTableComponent implements OnInit {
       .interval(config.interval)
       .map(() => {
         return this.getData();
-      });
+      })
+      .subscribe();
   }
 
-   sort(column) {
+  updateTime() {
+    return Observable
+      .interval(1000)
+      .map(() => {
+        return this.nextUpdate--;
+      })
+      .subscribe();
+  }
+
+  sort(column) {
     this.isDesc = !this.isDesc;
     this.activeColumn = column;
     this.direction = this.isDesc ? 1 : -1;
