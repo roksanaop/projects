@@ -4,7 +4,7 @@ export const config = {
     positive: 'green',
     neutral: 'white'
   },
-  interval: 15000,
+  interval: 15,
   headers: [
   {
     id: 'name',
