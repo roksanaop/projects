@@ -16,7 +16,7 @@ export class CryptoTableComponent implements OnInit {
 
   data: CryptoData[] = [];
   lastUpdate: Date;
-  nextUpdate: number = 15;
+  nextUpdate: number = config.interval;
   counter: number = 0;
   counterWord: string;
   activeColumn: string;
@@ -28,9 +28,9 @@ export class CryptoTableComponent implements OnInit {
               private sortingService: SortingService) { }
 
   ngOnInit() {
+    this.lastUpdate = new Date();
     this.getData();
     this.updateTime();
-    this.update();
   }
 
   ngOnDestroy() {
@@ -38,38 +38,30 @@ export class CryptoTableComponent implements OnInit {
       .unsubscribe();
     this.updateTime()
       .unsubscribe();
-    this.update()
-      .unsubscribe();
   }
 
   getData() {
     return this.coincapService.search()
       .subscribe(coincapResp => {
         let coincapArr = coincapResp.json();
-        this.lastUpdate = new Date();
         this.counter++;
         this.counterWord = (this.counter === 1 ? 'raz' : 'razy');
-        this.nextUpdate = 15;
         this.data = coincapArr;
       }, error => {
         alert('Serwis coincap.io może chwilowo nie działać lub spóźniać się z odpowiedzią.');
       });
   }
 
-  update() {
-    return Observable
-      .interval(config.interval)
-      .map(() => {
-        return this.getData();
-      })
-      .subscribe();
-  }
-
   updateTime() {
     return Observable
       .interval(1000)
       .map(() => {
-        return this.nextUpdate--;
+        if (this.nextUpdate > 0) {
+          return this.nextUpdate--;
+        }
+        this.nextUpdate = config.interval;
+        this.lastUpdate = new Date();
+        return this.getData();
       })
       .subscribe();
   }
